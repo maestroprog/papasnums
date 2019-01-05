@@ -3,4 +3,4 @@ project(numbers C)
 
 set(CMAKE_C_STANDARD 11)
 
-add_executable(numbers main.c)
+add_executable(numbers main.c my_math.c number.h number.c op.h op.c)
