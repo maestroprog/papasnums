@@ -6,8 +6,6 @@
 #include "my_math.h"
 #include "number.h"
 
-int max_recursion_level = 1;
-
 int extract_numbers(char *const *argv, int *numbers);
 
 void each_couple_of_numbers(struct couple_of_numbers *nums1, struct couple_of_numbers *nums2);
@@ -30,12 +28,12 @@ int main(int argc, char **argv) {
         double_numbers[i] = numbers[i] * 1.0;
     }
     struct couple_of_numbers *nums1 = create_couple_of_numbers(
-            create_single_number(&double_numbers[0]),
-            create_single_number(&double_numbers[1])
+            create_single_number(&double_numbers[0], 1),
+            create_single_number(&double_numbers[1], 1)
     );
     struct couple_of_numbers *nums2 = create_couple_of_numbers(
-            create_single_number(&double_numbers[2]),
-            create_single_number(&double_numbers[3])
+            create_single_number(&double_numbers[2], 1),
+            create_single_number(&double_numbers[3], 1)
     );
 
     each_couple_of_numbers(nums1, nums2);
@@ -61,7 +59,7 @@ void each_couple_of_numbers(struct couple_of_numbers *nums1, struct couple_of_nu
         ic++;
 
         for (int i = 0; i < ops_size; i++) {
-            double number_left = (*pair_ops[i])((*nums1->num1)->calc_num, (*nums1->num2)->calc_num);
+            double number_left = (*pair_ops[i])(nums1->num1->calc_num, nums1->num2->calc_num);
 
             if (my_math_error) {
                 my_math_error = 0; // reset error
@@ -69,7 +67,7 @@ void each_couple_of_numbers(struct couple_of_numbers *nums1, struct couple_of_nu
             }
 
             for (int j = 0; j < ops_size; j++) {
-                double number_right = (*pair_ops[j])((*nums2->num1)->calc_num, (*nums2->num2)->calc_num);
+                double number_right = (*pair_ops[j])(nums2->num1->calc_num, nums2->num2->calc_num);
 
                 if (my_math_error) {
                     my_math_error = 0; // reset error
@@ -77,10 +75,10 @@ void each_couple_of_numbers(struct couple_of_numbers *nums1, struct couple_of_nu
                 }
 
                 if (number_left == number_right) {
-                    char *chr1 = wrap_op((*nums1->num1));
-                    char *chr2 = wrap_op((*nums1->num2));
-                    char *chr3 = wrap_op((*nums2->num1));
-                    char *chr4 = wrap_op((*nums2->num2));
+                    char *chr1 = wrap_op(nums1->num1);
+                    char *chr2 = wrap_op(nums1->num2);
+                    char *chr3 = wrap_op(nums2->num1);
+                    char *chr4 = wrap_op(nums2->num2);
 
                     printf(
                             "%s%s%s==%s%s%s,%.2f==%.2f\n",
